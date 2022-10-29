@@ -1,0 +1,42 @@
+#!/usr/bin/env tcsh
+# -*-mode: csh -*-
+# ~/.tcshrc - Setup user shell environment
+#
+# See also tcsh(1), environ(7).
+#
+
+# /etc/csh.cshrc
+#     Read first by every shell.
+# /etc/csh.login
+#     Read by login shells after /etc/csh.cshrc.
+# ~/.tcshrc
+#     Read by every shell after /etc/csh.cshrc or its equivalent.
+# ~/.history
+#     Read by login shells after ~/.tcshrc if savehist is set. See also histfile.
+# ~/.login
+#     The shell reads ~/.login after ~/.tcshrc and ~/.history. See the version shell variable.
+# ~/.cshdirs
+#     Read by login shells after ~/.login if savedirs is set. See also dirsfile.
+# ~/.logout
+#     Read by login shells at logout.
+# /bin/sh
+#     Used to interpret shell scripts not starting with a #.
+# /tmp/sh*
+#     Temporary file for < <.
+
+if ( -d "${HOME}"/bin ) setenv PATH ${HOME}/bin:${PATH}
+if ( -d "${HOME}"/.local/bin ) setenv PATH ${HOME}/.local/bin:${PATH}
+
+foreach file ( ${HOME}/.config/profile.d/*.tcsh )
+    source $file
+end
+
+# for the login screen
+if ( $?prompt ) then
+    if ( -d "${HOME}"/.config/tcsh ) then
+        foreach i ( "${HOME}"/.config/tcsh/*.tcsh )
+            source $i
+        end
+    endif
+endif
+unset i
